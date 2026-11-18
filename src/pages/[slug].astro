@@ -1,0 +1,371 @@
+---
+import { getCollection } from 'astro:content';
+import Boton from '../components/ui/Boton.astro';
+import Pagina from '../layouts/Pagina.astro';
+import { fechaCorta, ordenar } from '../lib/blog';
+
+export async function getStaticPaths() {
+  const entradas = ordenar(await getCollection('blog'));
+  return entradas.map((entrada, i) => ({
+    params: { slug: entrada.data.slug },
+    props: {
+      entrada,
+      anterior: entradas[i + 1],
+      siguiente: entradas[i - 1],
+    },
+  }));
+}
+
+const { entrada, anterior, siguiente } = Astro.props;
+const { title, description, date, categories, tags, image, imageAlt, imageWidth, imageHeight, slug } = entrada.data;
+const canonical = new URL(`/${slug}/`, Astro.site).toString();
+const publicado = date.slice(0, 10);
+
+const jsonLdExtra = {
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  datePublished: date,
+  inLanguage: 'es-MX',
+  mainEntityOfPage: canonical,
+  url: canonical,
+  image: image ? new URL(image, Astro.site).toString() : undefined,
+  author: { '@id': `${Astro.site}#javier` },
+  publisher: { '@id': `${Astro.site}#javier` },
+  articleSection: categories.map((c) => c.nombre),
+  keywords: tags.join(', ') || undefined,
+};
+---
+
+<Pagina
+  title={`${title} · Javier Morodo`}
+  description={description}
+  ogImage={image}
+  ogImageAlt={imageAlt || title}
+  ogType="article"
+  published={publicado}
+  jsonLdExtra={jsonLdExtra}
+>
+  <article class="entrada">
+    <div class="entrada__cuerpo">
+      <p class="mini entrada__miga">
+        <a href="/">Inicio</a>
+        <span aria-hidden="true"> / </span>
+        <a href="/blog/">Blog</a>
+      </p>
+      {
+        categories.length > 0 && (
+          <p class="entrada__cats">
+            {categories.map((c) => (
+              <a class="mini" href={`/category/${c.slug}/`}>
+                {c.nombre}
+              </a>
+            ))}
+          </p>
+        )
+      }
+      <h1 class="display entrada__titulo">{title}</h1>
+      <p class="mini entrada__fecha">
+        <time datetime={publicado}>{fechaCorta(date)}</time>
+        <span> · Javier Morodo</span>
+      </p>
+      {
+        image && (
+          <img
+            class="entrada__foto"
+            src={image}
+            alt={imageAlt || ''}
+            width={imageWidth}
+            height={imageHeight}
+            fetchpriority="high"
+            decoding="async"
+          />
+        )
+      }
+      <div class="prosa" set:html={entrada.body} />
+
+      <aside class="entrada__boletin">
+        <p class="display">Recibe cada edición en tu correo.</p>
+        <p>Revolution Daily y Weekly, gratis. El mismo boletín de siempre.</p>
+        <Boton href="/#boletin" tamano="s">Suscribirme</Boton>
+      </aside>
+
+      <nav class="entrada__vecinos" aria-label="Artículos cercanos">
+        {
+          siguiente && (
+            <a href={`/${siguiente.data.slug}/`}>
+              <span class="mini">Más reciente</span>
+              <span class="display">{siguiente.data.title}</span>
+            </a>
+          )
+        }
+        {
+          anterior && (
+            <a href={`/${anterior.data.slug}/`}>
+              <span class="mini">Anterior</span>
+              <span class="display">{anterior.data.title}</span>
+            </a>
+          )
+        }
+      </nav>
+    </div>
+  </article>
+</Pagina>
+
+<style>
+  .entrada {
+    background: var(--fondo-blanco);
+    color: var(--texto-tinta);
+    padding: 40px 0 80px;
+  }
+
+  .entrada__cuerpo {
+    width: min(760px, 100% - 2 * var(--gutter));
+    margin-inline: auto;
+  }
+
+  .entrada__miga a:hover,
+  .entrada__cats a:hover {
+    color: var(--marca-electrico);
+  }
+
+  .entrada__miga {
+    color: var(--texto-tenue);
+  }
+
+  .entrada__cats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    margin-top: 22px;
+  }
+
+  .entrada__cats a {
+    color: var(--marca-electrico);
+  }
+
+  .entrada__titulo {
+    margin-top: 14px;
+    font-size: clamp(34px, 4vw, 52px);
+    line-height: 1.08;
+  }
+
+  .entrada__fecha {
+    margin-top: 16px;
+    color: var(--texto-tenue);
+  }
+
+  .entrada__foto {
+    width: 100%;
+    height: auto;
+    margin-top: 28px;
+    border-radius: 12px;
+    background: var(--fondo-crema);
+  }
+
+  .prosa {
+    margin-top: 36px;
+    font-size: 18px;
+    line-height: 1.75;
+  }
+
+  .prosa :global(p) {
+    margin: 0 0 1.15em;
+  }
+
+  .prosa :global(h2),
+  .prosa :global(h3),
+  .prosa :global(h4) {
+    font-family: var(--font-display);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    margin: 1.5em 0 0.5em;
+  }
+
+  .prosa :global(h2) {
+    font-size: 32px;
+  }
+
+  .prosa :global(h3) {
+    font-size: 26px;
+  }
+
+  .prosa :global(h4) {
+    font-size: 22px;
+  }
+
+  .prosa :global(a) {
+    color: var(--marca-electrico);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .prosa :global(ul),
+  .prosa :global(ol) {
+    margin: 0 0 1.15em;
+    padding-left: 1.25em;
+  }
+
+  .prosa :global(ul) {
+    list-style: disc;
+  }
+
+  .prosa :global(ol) {
+    list-style: decimal;
+  }
+
+  .prosa :global(li) {
+    margin: 0.3em 0;
+  }
+
+  .prosa :global(li > ul),
+  .prosa :global(li > ol) {
+    margin-bottom: 0.3em;
+  }
+
+  .prosa :global(blockquote) {
+    margin: 1.4em 0;
+    padding-left: 18px;
+    border-left: 2px solid var(--marca-electrico);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.4;
+  }
+
+  .prosa :global(img) {
+    width: 100%;
+    height: auto;
+    margin: 0.6em 0;
+    border-radius: 8px;
+  }
+
+  .prosa :global(figure) {
+    margin: 1.4em 0;
+  }
+
+  .prosa :global(figcaption) {
+    margin-top: 8px;
+    color: var(--texto-tenue);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .prosa :global(.wp-block-gallery),
+  .prosa :global(.gallery) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  .prosa :global(.wp-block-gallery figure) {
+    margin: 0;
+  }
+
+  .prosa :global(iframe),
+  .prosa :global(.video) {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin: 1.2em 0;
+    border: 0;
+    border-radius: 12px;
+  }
+
+  .prosa :global(table) {
+    width: 100%;
+    margin: 0 0 1.2em;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+
+  .prosa :global(td),
+  .prosa :global(th) {
+    padding: 8px 10px;
+    border: 1px solid var(--linea-clara);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .prosa :global(pre) {
+    overflow: auto;
+    margin: 0 0 1.2em;
+    padding: 16px;
+    border-radius: 8px;
+    background: #111;
+    color: #fff;
+    font-size: 14px;
+  }
+
+  .prosa :global(hr) {
+    margin: 2em 0;
+    border: 0;
+    border-top: 1px solid var(--linea-clara);
+  }
+
+  .entrada__boletin {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 48px;
+    padding: 24px;
+    border-radius: 15px;
+    background: var(--fondo-negro);
+    color: var(--texto-claro);
+  }
+
+  .entrada__boletin .display {
+    font-size: 28px;
+    line-height: 1.15;
+  }
+
+  .entrada__vecinos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 1px solid var(--linea-clara);
+  }
+
+  .entrada__vecinos a {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .entrada__vecinos a:last-child:not(:first-child) {
+    text-align: right;
+    align-items: flex-end;
+  }
+
+  .entrada__vecinos .mini {
+    color: var(--texto-tenue);
+  }
+
+  .entrada__vecinos .display {
+    font-size: 20px;
+    line-height: 1.2;
+  }
+
+  .entrada__vecinos a:hover .display {
+    color: var(--marca-electrico);
+  }
+
+  @media (max-width: 640px) {
+    .entrada {
+      padding-bottom: 56px;
+    }
+
+    .entrada__vecinos {
+      grid-template-columns: 1fr;
+    }
+
+    .entrada__vecinos a:last-child:not(:first-child) {
+      text-align: left;
+      align-items: flex-start;
+    }
+  }
+</style>
