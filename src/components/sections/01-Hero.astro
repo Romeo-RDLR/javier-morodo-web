@@ -19,22 +19,7 @@ const enlaces = [
 ];
 ---
 
-<header class="hero" id="inicio">
-  <div class="capa hero__cielo">
-    <Image src={cielo} alt="" widths={[800, 1600]} sizes="100vw" loading="eager" />
-  </div>
-  <div class="hero__retrato">
-    <Image
-      src={retrato}
-      alt="Javier Morodo"
-      widths={[640, 960, 1280, 1599]}
-      sizes="(max-width: 900px) 100vw, 55vw"
-      loading="eager"
-      fetchpriority="high"
-    />
-  </div>
-  <div class="capa hero__velos" aria-hidden="true"></div>
-
+<div class="nav-fijo">
   <nav class="nav contenedor" aria-label="Principal">
     <a href="#inicio" class="nav__logo">
       <Image src={logo} alt="Javier Morodo" width={182} height={39} loading="eager" />
@@ -62,6 +47,23 @@ const enlaces = [
     </button>
     <span class="nav__linea" aria-hidden="true"></span>
   </nav>
+</div>
+
+<header class="hero" id="inicio">
+  <div class="capa hero__cielo">
+    <Image src={cielo} alt="" widths={[800, 1600]} sizes="100vw" loading="eager" />
+  </div>
+  <div class="hero__retrato">
+    <Image
+      src={retrato}
+      alt="Javier Morodo"
+      widths={[640, 960, 1280, 1599]}
+      sizes="(max-width: 900px) 100vw, 55vw"
+      loading="eager"
+      fetchpriority="high"
+    />
+  </div>
+  <div class="capa hero__velos" aria-hidden="true"></div>
 
   <div class="hero__contenido contenedor">
     <p class="kicker hero__kicker">Inversionista · Emprendedor · Educador financiero</p>
@@ -115,6 +117,7 @@ const enlaces = [
     min-height: min(980px, 100svh);
     display: flex;
     flex-direction: column;
+    padding-top: var(--cabecera);
     background: var(--fondo-negro);
     color: var(--texto-claro);
   }
@@ -150,14 +153,28 @@ const enlaces = [
       linear-gradient(to right, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 68%);
   }
 
-  /* ---------- Navegación ---------- */
+  /* ---------- Navegación fija ---------- */
+  .nav-fijo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 40;
+    height: var(--cabecera);
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.92);
+    -webkit-backdrop-filter: blur(18px) saturate(1.15);
+    backdrop-filter: blur(18px) saturate(1.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  }
+
   .nav {
     position: relative;
     display: flex;
     align-items: center;
     gap: 32px;
-    padding-top: 34px;
-    padding-bottom: 20px;
+    height: 100%;
   }
 
   .nav__logo {
@@ -332,15 +349,18 @@ const enlaces = [
       position: absolute;
       z-index: 10;
       top: calc(100% + 1px);
-      left: 0;
-      right: 0;
+      left: 50%;
+      right: auto;
+      width: 100vw;
+      transform: translateX(-50%);
       flex-direction: column;
       gap: 0;
-      padding: 8px 20px;
-      background: rgba(10, 10, 10, 0.94);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--linea-oscura);
-      border-radius: 0 0 var(--radio-card) var(--radio-card);
+      padding: 8px 20px 12px;
+      background: #0a0a0a;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      border-bottom: 1px solid var(--linea-oscura);
+      border-radius: 0;
       font-size: 13px;
     }
 

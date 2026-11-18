@@ -23,16 +23,21 @@ const aqui = Astro.url.pathname.startsWith('/blog') || Astro.url.pathname.starts
 
 <style>
   .cabecera {
-    background: var(--fondo-negro);
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgba(0, 0, 0, 0.92);
+    -webkit-backdrop-filter: blur(18px) saturate(1.15);
+    backdrop-filter: blur(18px) saturate(1.15);
     color: var(--texto-claro);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
   }
 
   .cabecera__barra {
     display: flex;
     align-items: center;
     gap: 28px;
-    min-height: 84px;
+    min-height: var(--cabecera);
   }
 
   .cabecera__logo {
