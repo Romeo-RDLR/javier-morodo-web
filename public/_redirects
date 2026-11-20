@@ -1,4 +1,7 @@
 # Redirecciones del sitio anterior (WordPress) → sitio nuevo. 301 para conservar el SEO.
+# Fuente de verdad en producción: worker/index.js (estas reglas se mantienen
+# como respaldo documental; el Worker es el que realmente aplica los 301).
+
 # Páginas → su sección en la home
 /conferencias /#conferencias 301
 /conferencias/ /#conferencias 301
@@ -29,10 +32,173 @@
 /payment-confirmation / 301
 /payment-confirmation/ / 301
 
-# Artículos publicados: páginas en /{slug}/. Lo que queda aquí son borradores o slugs que no están en el archivo.
-/feed https://javiermtzmorodo.substack.com/feed 301
-/feed/ https://javiermtzmorodo.substack.com/feed 301
-/los-libros-que-definieron-mi-2024/ https://javiermtzmorodo.substack.com 301
-/los-libros-que-definieron-mi-2024 https://javiermtzmorodo.substack.com 301
+# Slugs antiguos de WordPress (_wp_old_slug) → slug canónico actual
+/la-libertad-financiera-es-una-precondicion-para-el-desarrollo-del-potencial-humano /libertad-financiera/ 301
+/la-libertad-financiera-es-una-precondicion-para-el-desarrollo-del-potencial-humano/ /libertad-financiera/ 301
+/siempre-he-sido-un-fanatico-de-la-experimentacion-y-lo-que-esta-en-la-frontera-de-la-ciencia /biohacking2-0/ 301
+/siempre-he-sido-un-fanatico-de-la-experimentacion-y-lo-que-esta-en-la-frontera-de-la-ciencia/ /biohacking2-0/ 301
+/filosofia-y-codigo /aristoteles-smartphone/ 301
+/filosofia-y-codigo/ /aristoteles-smartphone/ 301
+/entender-a-tu-cuerpo-es-lo-mas-importante-para-poder-hacer-biohacking-en-este-post-te-explico-como-hacerlo /biohacking-3/ 301
+/entender-a-tu-cuerpo-es-lo-mas-importante-para-poder-hacer-biohacking-en-este-post-te-explico-como-hacerlo/ /biohacking-3/ 301
+/historia-de-tu-cliente /la-historia-del-cliente/ 301
+/historia-de-tu-cliente/ /la-historia-del-cliente/ 301
+/la-clave-del-marketing-exitoso-la-historia-de-tu-cliente /la-historia-del-cliente/ 301
+/la-clave-del-marketing-exitoso-la-historia-de-tu-cliente/ /la-historia-del-cliente/ 301
+/gamestop-mania-las-masas-y-los-mercados-financieros /gamestop-mania/ 301
+/gamestop-mania-las-masas-y-los-mercados-financieros/ /gamestop-mania/ 301
+/por-que-invertir-en-etfs /etfs/ 301
+/por-que-invertir-en-etfs/ /etfs/ 301
+/crypto /crypto-internet-valor/ 301
+/crypto/ /crypto-internet-valor/ 301
+/lecciones-de-grandes-inversionistas-vol-i-warren-buffett /warren-buffett/ 301
+/lecciones-de-grandes-inversionistas-vol-i-warren-buffett/ /warren-buffett/ 301
+/lecciones-de-grandes-inversionistas-ray-dalio /ray-dalio/ 301
+/lecciones-de-grandes-inversionistas-ray-dalio/ /ray-dalio/ 301
+/lecciones-de-grandes-inversionistas-vol-v-alfredo-harp-helu-y-roberto-hernandez /alfredo-harp-helu-y-roberto-hernandez/ 301
+/lecciones-de-grandes-inversionistas-vol-v-alfredo-harp-helu-y-roberto-hernandez/ /alfredo-harp-helu-y-roberto-hernandez/ 301
+/los-atletas-de-alto-rendimiento-son-inversionistas-a-largo-plazo /atletas-e-inversiones/ 301
+/los-atletas-de-alto-rendimiento-son-inversionistas-a-largo-plazo/ /atletas-e-inversiones/ 301
+/la-turbulencia-en-el-mundo-crypto /turbulencia-crypto/ 301
+/la-turbulencia-en-el-mundo-crypto/ /turbulencia-crypto/ 301
+/top-10-libros-del-2023 /top-10-libros-del-2022/ 301
+/top-10-libros-del-2023/ /top-10-libros-del-2022/ 301
+/reflexiones-sobre-llevar-el-cuerpo-al-limite /llevar-el-cuerpo-al-limite/ 301
+/reflexiones-sobre-llevar-el-cuerpo-al-limite/ /llevar-el-cuerpo-al-limite/ 301
+/wealth-mastery-ii /wealth-mastery-2/ 301
+/wealth-mastery-ii/ /wealth-mastery-2/ 301
+/wealth-mastery-iii /wealth-mastery-iii-como-generar-riqueza/ 301
+/wealth-mastery-iii/ /wealth-mastery-iii-como-generar-riqueza/ 301
+/guia-para-invertir-en-cripto /guia-para-invertir-en-crypto/ 301
+/guia-para-invertir-en-cripto/ /guia-para-invertir-en-crypto/ 301
+/el-verdadero-acto-de-generosidad-la-disciplina-y-el-amor-propio /disciplina-es-amor-propio/ 301
+/el-verdadero-acto-de-generosidad-la-disciplina-y-el-amor-propio/ /disciplina-es-amor-propio/ 301
+/el-avatar-pelicula-todos-estamos-conectados /el-avatar/ 301
+/el-avatar-pelicula-todos-estamos-conectados/ /el-avatar/ 301
+/los-libros-que-definieron-mi-2024 /los-libros-que-definieron-mi-2025/ 301
+/los-libros-que-definieron-mi-2024/ /los-libros-que-definieron-mi-2025/ 301
 
-# Reglas con comodín al final (Cloudflare permite máximo 100 dinámicas)
+# Feeds y sitemaps históricos
+/feed /blog/feed.xml 301
+/feed/ /blog/feed.xml 301
+/comments/feed /blog/feed.xml 301
+/comments/feed/ /blog/feed.xml 301
+/sitemap_index.xml /sitemap.xml 301
+/post-sitemap.xml /sitemap.xml 301
+/page-sitemap.xml /sitemap.xml 301
+/category-sitemap.xml /sitemap.xml 301
+/wp-sitemap.xml /sitemap.xml 301
+
+# Paginación de WordPress (/page/N/) → rutas nuevas (/pagina/N/)
+/page/1 /blog/ 301
+/page/1/ /blog/ 301
+/blog/page/1 /blog/ 301
+/blog/page/1/ /blog/ 301
+/blog/page/2 /blog/pagina/2/ 301
+/blog/page/2/ /blog/pagina/2/ 301
+/page/2 /blog/pagina/2/ 301
+/page/2/ /blog/pagina/2/ 301
+/blog/page/3 /blog/pagina/3/ 301
+/blog/page/3/ /blog/pagina/3/ 301
+/page/3 /blog/pagina/3/ 301
+/page/3/ /blog/pagina/3/ 301
+/blog/page/4 /blog/pagina/4/ 301
+/blog/page/4/ /blog/pagina/4/ 301
+/page/4 /blog/pagina/4/ 301
+/page/4/ /blog/pagina/4/ 301
+/blog/page/5 /blog/pagina/5/ 301
+/blog/page/5/ /blog/pagina/5/ 301
+/page/5 /blog/pagina/5/ 301
+/page/5/ /blog/pagina/5/ 301
+/blog/page/6 /blog/pagina/6/ 301
+/blog/page/6/ /blog/pagina/6/ 301
+/page/6 /blog/pagina/6/ 301
+/page/6/ /blog/pagina/6/ 301
+/blog/page/7 /blog/pagina/7/ 301
+/blog/page/7/ /blog/pagina/7/ 301
+/page/7 /blog/pagina/7/ 301
+/page/7/ /blog/pagina/7/ 301
+/blog/page/8 /blog/pagina/8/ 301
+/blog/page/8/ /blog/pagina/8/ 301
+/page/8 /blog/pagina/8/ 301
+/page/8/ /blog/pagina/8/ 301
+/blog/page/9 /blog/pagina/9/ 301
+/blog/page/9/ /blog/pagina/9/ 301
+/page/9 /blog/pagina/9/ 301
+/page/9/ /blog/pagina/9/ 301
+/blog/page/10 /blog/pagina/10/ 301
+/blog/page/10/ /blog/pagina/10/ 301
+/page/10 /blog/pagina/10/ 301
+/page/10/ /blog/pagina/10/ 301
+/blog/page/11 /blog/pagina/11/ 301
+/blog/page/11/ /blog/pagina/11/ 301
+/page/11 /blog/pagina/11/ 301
+/page/11/ /blog/pagina/11/ 301
+/blog/page/12 /blog/pagina/12/ 301
+/blog/page/12/ /blog/pagina/12/ 301
+/page/12 /blog/pagina/12/ 301
+/page/12/ /blog/pagina/12/ 301
+/blog/page/13 /blog/pagina/13/ 301
+/blog/page/13/ /blog/pagina/13/ 301
+/page/13 /blog/pagina/13/ 301
+/page/13/ /blog/pagina/13/ 301
+/blog/page/14 /blog/pagina/14/ 301
+/blog/page/14/ /blog/pagina/14/ 301
+/page/14 /blog/pagina/14/ 301
+/page/14/ /blog/pagina/14/ 301
+/blog/page/15 /blog/pagina/15/ 301
+/blog/page/15/ /blog/pagina/15/ 301
+/page/15 /blog/pagina/15/ 301
+/page/15/ /blog/pagina/15/ 301
+/blog/page/16 /blog/pagina/16/ 301
+/blog/page/16/ /blog/pagina/16/ 301
+/page/16 /blog/pagina/16/ 301
+/page/16/ /blog/pagina/16/ 301
+
+# Paginación de categorías (las que hoy tienen más de una página)
+/category/inversion/page/1 /category/inversion/ 301
+/category/inversion/page/1/ /category/inversion/ 301
+/category/inversion/page/2 /category/inversion/pagina/2/ 301
+/category/inversion/page/2/ /category/inversion/pagina/2/ 301
+/category/inversion/page/3 /category/inversion/pagina/3/ 301
+/category/inversion/page/3/ /category/inversion/pagina/3/ 301
+/category/inversion/page/4 /category/inversion/pagina/4/ 301
+/category/inversion/page/4/ /category/inversion/pagina/4/ 301
+/category/inversion/page/5 /category/inversion/pagina/5/ 301
+/category/inversion/page/5/ /category/inversion/pagina/5/ 301
+/category/inversion/page/6 /category/inversion/pagina/6/ 301
+/category/inversion/page/6/ /category/inversion/pagina/6/ 301
+/category/desarrollo-personal/page/1 /category/desarrollo-personal/ 301
+/category/desarrollo-personal/page/1/ /category/desarrollo-personal/ 301
+/category/desarrollo-personal/page/2 /category/desarrollo-personal/pagina/2/ 301
+/category/desarrollo-personal/page/2/ /category/desarrollo-personal/pagina/2/ 301
+/category/desarrollo-personal/page/3 /category/desarrollo-personal/pagina/3/ 301
+/category/desarrollo-personal/page/3/ /category/desarrollo-personal/pagina/3/ 301
+/category/desarrollo-personal/page/4 /category/desarrollo-personal/pagina/4/ 301
+/category/desarrollo-personal/page/4/ /category/desarrollo-personal/pagina/4/ 301
+/category/dinero/page/1 /category/dinero/ 301
+/category/dinero/page/1/ /category/dinero/ 301
+/category/dinero/page/2 /category/dinero/pagina/2/ 301
+/category/dinero/page/2/ /category/dinero/pagina/2/ 301
+/category/riqueza/page/1 /category/riqueza/ 301
+/category/riqueza/page/1/ /category/riqueza/ 301
+/category/riqueza/page/2 /category/riqueza/pagina/2/ 301
+/category/riqueza/page/2/ /category/riqueza/pagina/2/ 301
+/category/conocimiento-general/page/1 /category/conocimiento-general/ 301
+/category/conocimiento-general/page/1/ /category/conocimiento-general/ 301
+/category/conocimiento-general/page/2 /category/conocimiento-general/pagina/2/ 301
+/category/conocimiento-general/page/2/ /category/conocimiento-general/pagina/2/ 301
+/category/crypto/page/1 /category/crypto/ 301
+/category/crypto/page/1/ /category/crypto/ 301
+/category/crypto/page/2 /category/crypto/pagina/2/ 301
+/category/crypto/page/2/ /category/crypto/pagina/2/ 301
+
+# Tags y authors del WordPress (el sitio nuevo no tiene esas rutas)
+/tag /blog/ 301
+/tag/ /blog/ 301
+/tag/* /blog/ 301
+/author /blog/ 301
+/author/ /blog/ 301
+/author/* /blog/ 301
+
+# Shortlinks /?p=ID: solo en el Worker (no se pueden expresar aquí).
