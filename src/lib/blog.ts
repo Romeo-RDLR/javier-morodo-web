@@ -23,6 +23,36 @@ export function fechaCorta(iso: string) {
   return `${f.dia} ${f.mes} ${f.anio}`;
 }
 
+/** Minutos de lectura a ~220 palabras por minuto, en español. */
+export function minutosDeLectura(html: string) {
+  const palabras = html
+    .replace(/<[^>]+>/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean).length;
+  return Math.max(1, Math.round(palabras / 220));
+}
+
+/** Hasta tres artículos de la misma categoría; si faltan, los más recientes. */
+export function relacionadasDe(entradas: Entrada[], actual: Entrada) {
+  const categorias = new Set(actual.data.categories.map((c) => c.slug));
+  const elegidas: Entrada[] = [];
+  const usadas = new Set<string>([actual.data.slug]);
+  for (const entrada of entradas) {
+    if (usadas.has(entrada.data.slug)) continue;
+    if (!entrada.data.categories.some((c) => categorias.has(c.slug))) continue;
+    elegidas.push(entrada);
+    usadas.add(entrada.data.slug);
+    if (elegidas.length === 3) return elegidas;
+  }
+  for (const entrada of entradas) {
+    if (elegidas.length === 3) break;
+    if (usadas.has(entrada.data.slug)) continue;
+    elegidas.push(entrada);
+    usadas.add(entrada.data.slug);
+  }
+  return elegidas;
+}
+
 export function colorCategoria(slug: string) {
   let h = 0;
   for (const c of slug) h = (h * 33 + c.charCodeAt(0)) >>> 0;
